@@ -1,3 +1,4 @@
+import 'package:app1/screens/signup/components/body.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -5,6 +6,11 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Body(child: Column(),),);
   }
 }
+
+
+
+
