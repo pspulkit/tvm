@@ -18,12 +18,13 @@ class Body extends StatelessWidget {
     return Background(child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        //SizedBox(height: size.height * 0.06,),
         Text("SIGN UP",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.purple,),
         ),
-        SizedBox(height: size.height * 0.03,),
+        //SizedBox(height: size.height * 0.02,),
         SvgPicture.asset("assets/icons/signup.svg",
-          height: size.height * 0.35,
+          height: size.height * 0.3,
         ),
         SizedBox(height: size.height * 0.03,),
         RoundedInputField(
@@ -52,23 +53,23 @@ class Body extends StatelessWidget {
             );
             },
         ),
-        OrDivider(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Container(
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1 ,
-                color: Colors.deepPurple,
-              ),
-              shape: BoxShape.circle,
-              ),
-            child: SvgPicture.asset("assets/icons/facebook.svg", height: 20,width: 20,),
-          ),
-          ],
-
-        )
+        //OrDivider(),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [Container(
+        //     padding: EdgeInsets.all(5),
+        //     decoration: BoxDecoration(
+        //       border: Border.all(
+        //         width: 0.5 ,
+        //         color: Colors.deepPurple,
+        //       ),
+        //       shape: BoxShape.circle,
+        //       ),
+        //     child: SvgPicture.asset("assets/icons/facebook.svg", height: 20,width: 20,),
+        //   ),
+        //   ],
+        //
+        // )
         ],
    ), );
   }
