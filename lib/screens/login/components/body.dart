@@ -2,15 +2,19 @@ import 'package:app1/components/already_have_an_account_acheck.dart';
 import 'package:app1/components/rounded_button.dart';
 import 'package:app1/components/rounded_input_field.dart';
 import 'package:app1/components/rounded_password_field.dart';
+import 'package:app1/homescreen/home_screen.dart';
 import 'package:app1/main.dart';
 import 'package:app1/screens/login/components/background.dart';
 import 'package:app1/screens/signup/signup_screen.dart';
 import 'package:app1/screens/welcome_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../../openscreen.dart';
 
 class Body extends StatefulWidget {
   const Body({
@@ -64,21 +68,24 @@ class _BodyState extends State<Body> {
           //SizedBox(height: size.height * 0.02,),
           RoundedButton(
             text: "LOGIN",
+            // press: (){
+            //   Navigator.pushAndRemoveUntil(
+            //                 context,
+            //                 MaterialPageRoute(
+            //                     builder: (_) => const HomeScreen()),
+            //                 (_) => false);
+            // },
             press: () async {
+              await Firebase.initializeApp();
               try {
                 UserCredential userCredential = await FirebaseAuth.instance
                     .signInWithEmailAndPassword(
                         email: email, password: password);
                 if (userCredential.user != null) {
-                  await FirebaseFirestore.instance
-                      .collection("user")
-                      .doc(userCredential.user!.uid)
-                      .set(
-                          {"name": "ss", "email": email, "password": password});
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => const welcomescreen(title: "title")),
+                          builder: (_) => const HomeScreen()),
                       (_) => false);
                 }
               } on FirebaseAuthException catch (e) {

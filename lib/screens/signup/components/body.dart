@@ -5,13 +5,24 @@ import 'package:app1/components/rounded_password_field.dart';
 import 'package:app1/screens/login/login_screen.dart';
 import 'package:app1/screens/signup/components/background.dart';
 import 'package:app1/screens/signup/components/or_divider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-class Body extends StatelessWidget {
+import 'package:flash/flash.dart';
+class Body extends StatefulWidget {
   final Widget child;
   const Body({Key? key,
     required this.child}) : super(key: key);
 
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  late String email;
+  late String password;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -28,16 +39,48 @@ class Body extends StatelessWidget {
         ),
         SizedBox(height: size.height * 0.03,),
         RoundedInputField(
-            hintText: "Your Email", 
-            onChanged: (value){},
+            hintText: "Your Email",
+            onChanged: (value){
+              email = value;
+            },
             ),
         RoundedPasswordField(
-          onChanged: (value){},
+          onChanged: (value){
+            password = value;
+          },
         ),
         SizedBox(height: size.height * 0.01,),
         RoundedButton(
           text: "SIGNUP",
-          press: (){},
+          press: () async {
+            await Firebase.initializeApp();
+            try {
+              UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                  email: email,
+                  password: password,
+              );
+              if (userCredential.user != null){
+                await FirebaseFirestore.instance
+                    .collection("user")
+                    .doc(userCredential.user!.uid)
+                    .set(
+                    {"email": email, "password": password});
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const LoginScreen()),
+                        (_) => false);
+              }
+            } on FirebaseAuthException catch (e) {
+              if (e.code == 'weak-password') {
+                print('The password provided is too weak.');
+              } else if (e.code == 'email-already-in-use') {
+                print('The account already exists for that email.');
+              }
+            } catch (e) {
+              context.showToast(e);
+            }
+          },
         ),
         SizedBox(height: size.height * 0.01,),
         AlreadyHaveAnAccountCheck(
