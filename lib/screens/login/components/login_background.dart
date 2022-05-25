@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Background extends StatelessWidget {
+class LoginBackground extends StatelessWidget {
   final Widget child;
 
-  const Background({
+  const LoginBackground({
     Key? key,
     required this.child,
   }) : super(key: key);
@@ -11,7 +11,7 @@ class Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: size.height,
       child: Stack(

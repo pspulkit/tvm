@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../screens/cart/cart_screen.dart';
+import '../cart/cart_screen.dart';
+import 'category_model.dart';
+import 'product_model.dart';
 
 class HomeScreenBody extends StatefulWidget {
   const HomeScreenBody({Key? key}) : super(key: key);
@@ -26,10 +28,13 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: CustomScrollView(
           controller: controllerTypeDataList,
           slivers: [
+            SliverList(
+                delegate: SliverChildListDelegate([
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
@@ -67,7 +72,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return const cart_screen();
+                          return const CartScreen();
                         }));
                       },
                       child: Container(
@@ -96,7 +101,8 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
                           fetchProduct(itemList[i].id);
                         },
                         child: Container(
-                          margin: const EdgeInsets.only(top: 10, bottom: 10,left: 5,right: 5),
+                          margin: const EdgeInsets.only(
+                              top: 10, bottom: 10, left: 5, right: 5),
                           width: 150,
                           height: size.height * 0.2,
                           decoration: BoxDecoration(
@@ -109,26 +115,28 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
                   ],
                 ),
               ),
-
-              GridView.builder(controller:controllerTypeDataList,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2), itemBuilder:(context,index){
-
-                  return InkWell(
-                    onTap: () {},
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 10, bottom: 10),
-                      // width: size.width * 0.9,
-                      // height: size.height * 0.2,
-                      decoration: BoxDecoration(
-                        color: Colors.purple.shade50,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Image.network(productList[index].image[0]),
-                    ),
-                  );
-              },itemCount: productList.length, )
-
-            ],
-
+            ])),
+            SliverGrid(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2),
+              delegate: SliverChildListDelegate(productList
+                  .map(((e) => InkWell(
+                        onTap: () {},
+                        child: Container(
+                          margin: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(15),
+                          width: size.width * 0.9,
+                          height: size.height * 0.2,
+                          decoration: BoxDecoration(
+                            color: Colors.purple.shade50,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Image.network(e.image[0]),
+                        ),
+                      )))
+                  .toList()),
+            )
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -163,7 +171,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
     fetchProduct(itemList.first.id);
   }
 
-  Future<void> fetchProduct(String id)async{
+  Future<void> fetchProduct(String id) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection("product")
         .where("id", isEqualTo: id)
@@ -174,90 +182,5 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
           .add(ProductModel.fromJson(item.data() as Map<dynamic, dynamic>));
     }
     setState(() {});
-
   }
-}
-class ProductModel{
- final String id;
- final String productId;
- final String name;
- final List<dynamic> image;
- final String mrp;
- final String productType;
- final String price;
- final String productBy;
- final String storeName;
- final String rating;
- final String shortDescription;
- final Map<dynamic, dynamic> productData;
- final List<dynamic> location;
- final List<dynamic> tags;
- final bool isAvailable;
- final String totalProductCount;
-
- ProductModel(
-      {required this.id,
-      required this.productId,
-      required this.name,
-      required this.image,
-      required this.mrp,
-      required this.productType,
-      required this.price,
-      required this.productBy,
-      required this.storeName,
-      required this.rating,
-      required this.shortDescription,
-      required this.productData,
-      required this.location,
-      required this.tags,
-      required this.isAvailable,
-      required this.totalProductCount});
-
- factory ProductModel.fromJson(Map<dynamic, dynamic> value) {
-   return ProductModel(
-       id: value["id"]??"001",
-       productId: value["productId"]??"0001",
-       name: value["name"]??"",
-       image: value["image"]??"",
-       mrp: value["mrp"]??"",
-       productType: value["productType"]??"",
-       price: value["price"]??"",
-       productBy: value["productBy"]??"",
-       storeName: value["storeName"]??"",
-       rating: value["rating"]??"",
-       shortDescription: value["shortDescription"]??"",
-       productData: value["productData"]??"",
-       location: value["location"]??"",
-       totalProductCount: value["totalProductCount"]??"",
-       tags: value["tags"]??"",
-       isAvailable: value["isAvailable"]??"");
- }
-}
-class CategoryModel {
-  final String name;
-  final String image;
-  final String id;
-  final int itemIndex;
-
-  CategoryModel(
-      {required this.name,
-      required this.id,
-      required this.image,
-      required this.itemIndex});
-
-  factory CategoryModel.fromJson(Map<dynamic, dynamic> json) {
-    return CategoryModel(
-        name: json['name'],
-        image: json['image'],
-        id: json['id'],
-        itemIndex: json['itemIndex']);
-  }
-}
-
-class home_offers {
-  final String name;
-  final String link;
-  final int id;
-
-  home_offers(this.name, this.link, this.id);
 }

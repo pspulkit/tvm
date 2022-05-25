@@ -2,41 +2,36 @@ import 'package:app1/components/already_have_an_account_acheck.dart';
 import 'package:app1/components/rounded_button.dart';
 import 'package:app1/components/rounded_input_field.dart';
 import 'package:app1/components/rounded_password_field.dart';
-import 'package:app1/homescreen/home_screen.dart';
-import 'package:app1/main.dart';
-import 'package:app1/screens/login/components/background.dart';
+import 'package:app1/screens/login/components/login_background.dart';
 import 'package:app1/screens/signup/signup_screen.dart';
-import 'package:app1/screens/welcome_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../openscreen.dart';
+import '../../homescreen/home_screen.dart';
 
-class Body extends StatefulWidget {
-  const Body({
+class LoginBody extends StatefulWidget {
+  const LoginBody({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<Body> createState() => _BodyState();
+  State<LoginBody> createState() => _LoginBodyState();
 }
 
-class _BodyState extends State<Body> {
+class _LoginBodyState extends State<LoginBody> {
   late String email;
   late String password;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Background(
+    return LoginBackground(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             "LOGIN",
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -84,8 +79,7 @@ class _BodyState extends State<Body> {
                 if (userCredential.user != null) {
                   Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                          builder: (_) => const HomeScreen()),
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
                       (_) => false);
                 }
               } on FirebaseAuthException catch (e) {
@@ -103,7 +97,7 @@ class _BodyState extends State<Body> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return SignUpScreen();
+                    return const SignUpScreen();
                   },
                 ),
               );
