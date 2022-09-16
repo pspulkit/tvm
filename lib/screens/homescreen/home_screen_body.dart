@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:app1/screens/productscreen/Product_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -122,11 +125,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
               delegate: SliverChildListDelegate(productList
                   .map(((e) => InkWell(
                         onTap: () {
-                          /* Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) =>
-                                      Product_screen(productModel: e))); */
+                          Navigator.push(context, MaterialPageRoute(builder: (_)=>Product_screen(productModel: e)));
                         },
                         child: Container(
                           margin: const EdgeInsets.all(10),
@@ -139,17 +138,12 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
                           ),
                           child: Stack(
                             children: [
-                              Positioned(
-                                left: 10,
-                                right: 10,
-                                top: -20,
-                                bottom: 5,
+                              Positioned(left: 10,right: 10,top: -20,bottom: 5,
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: 0, horizontal: 10),
+                                  margin: EdgeInsets.symmetric(vertical: 0,horizontal: 10),
                                   alignment: FractionalOffset.topCenter,
-                                  width: size.width * 0.3,
-                                  height: size.height * 0.3,
+                                  width: size.width*0.3,
+                                  height: size.height*0.3,
                                   child: Image.network(e.image[0]),
                                 ),
                               ),
@@ -159,40 +153,19 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
                               * column
                               * text =>name,price =>white
                               * */
-                              Positioned(
-                                left: 3,
-                                right: 10,
-                                top: 70,
-                                bottom: 5,
+                              Positioned(left: 3,right: 10,top: 70,bottom: 5,
                                 child: Container(
-                                    margin: EdgeInsets.only(
-                                        left: 0, top: 1, right: 0, bottom: 1),
-                                    child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          e.name,
-                                          style: TextStyle(fontSize: 10),
-                                        ))),
+                                  margin: EdgeInsets.only(left: 0,top: 1,right: 0,bottom: 1),
+                                    child: Align(alignment: Alignment.center,child: Text(e.name,style: TextStyle(fontSize: 10),))),
                               ),
-                              Positioned(
-                                left: 3,
-                                right: 5,
-                                top: 120,
-                                bottom: 1,
+                              Positioned(left: 3,right: 5,top: 120,bottom: 1,
                                 child: Container(
-                                    margin: EdgeInsets.only(
-                                        left: 0, top: 1, right: 0, bottom: 0),
-                                    child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "RS " + e.price,
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold),
-                                        ))),
+                                    margin: EdgeInsets.only(left: 0,top: 1,right: 0,bottom: 0),
+                                    child: Align(alignment: Alignment.center,child: Text("RS "+ e.price,style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),))),
                               )
                             ],
                           ),
+
                         ),
                       )))
                   .toList()),
