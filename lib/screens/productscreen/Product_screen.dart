@@ -50,7 +50,7 @@ class _Product_screenState extends State<Product_screen> {
                         width: size.width,
                         padding: EdgeInsets.only(left: 20),
                         child: Text(
-                          'Rs ${widget.productModel.mrp}',
+                           'Price : Rs ${widget.productModel.mrp}',
                           style: TextStyle(
                             color: Colors.purple,
                             fontWeight: FontWeight.bold,
@@ -58,12 +58,13 @@ class _Product_screenState extends State<Product_screen> {
                           )
                         ),
                       ),
+                      SizedBox(width: size.width,height: 30,),
                       Container(
                         width: size.width,
                         height: size.height*0.5,
                         padding: EdgeInsets.only(left: 50),
                         child: Text(
-                          widget.productModel.name,
+                          "Groceries means any raw or processed food or bev- erage, or any ingredient thereof, intended for human con- sumption except alcoholic beverages, marijuana products, and tobacco. “Groceries” includes, but is not limited to, meat, poultry, fish, fruits, vegetables, grains, bread, milk, cheese and other dairy products, nonalcoholic beverages, kombucha with less than 0.5% alcohol by volume, con- diments, spices, cereals, seasonings, leavening agents, eggs, cocoa, teas, and coffees whether raw or processed.",
                             style: TextStyle(
                                 color: Colors.purple,
                                 fontWeight: FontWeight.bold,
